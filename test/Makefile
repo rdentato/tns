@@ -19,24 +19,27 @@ TESTS=$(TESTS_SRC:.c=)
 MAKEFLAGS += --no-builtin-rules
 
 # targets
-
 all: $(TESTS)
+
+SRCDIR=../src
+include $(SRCDIR)/tns/Makefile.mk
 
 runtest: all
 	@echo > test.out
 	@for f in $(TESTS); do echo "TEST: $$f" >> test.out ; ./$$f 2>> test.out; done 
 	@grep 'FAIL:' test.out
 
-../src/tns.o: ../src/tns.c
+
+%.o: %.c 
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-%: %.o ../src/tns.o 
+%: %.o ../src/tns.o
 	$(CC) $(CFLAGS) $< ../src/tns.o -o $* $(LIBS)
 
 .PRECIOUS: %.o
 
 clean:
-	rm -f $(TESTS) $(TESTS:=.exe) $(TESTS:=.o) ../src/tns.o test.out
+	rm -f $(TESTS) $(TESTS:=.exe) $(TESTS:=.o) $(SRCDIR)/tns.o test.out
+
+cleanall: clean
+	make -C $(SRCDIR) clean
