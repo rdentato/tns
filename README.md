@@ -77,6 +77,12 @@ tns_nrows(t1); // returns the number of rows
 tns_ncols(t1); // returns the number of columns
 ```
 
+## Multiplication
+The `tns_matmul(r,A,x)` implments the operation `r = A * x` where `r` and `x` are vectors and `A` is a matrix of compatible dimensions.
+
+The result vector `r` must be of type `fp32` while `A` and `x` can be quantized.
+
+
 ## Setting and Getting Tensor Values
 
 You can initialize a tensor by copying values into it:
